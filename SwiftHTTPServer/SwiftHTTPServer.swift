@@ -7,6 +7,9 @@
 //
 
 import Cocoa
+import ObjectiveC
+
+var counterKey = "counter"
 
 class SwiftHTTPReq: NSObject {
     let path:String
@@ -30,13 +33,14 @@ class SwiftHTTPRes: NSObject {
     }
 }
 
-class SwiftHTTPServer {
+class SwiftHTTPServer{
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var socket = SwiftHTTPObjcUtils.CFSocketCreate().takeRetainedValue()
     var listeningHandle:NSFileHandle?
+    var incomingRequests:NSMutableDictionary = NSMutableDictionary.dictionary()
+    var counter:Int = 0
     
     init () {
-        
     }
     
     func getRoute(route:String) ->String {
@@ -62,7 +66,7 @@ class SwiftHTTPServer {
     func start(port:Int, callback: (NSError?, SwiftHTTPServer) -> Void) -> SwiftHTTPServer {
         SwiftHTTPObjcUtils.socket(socket, connectToPort: port)
         listeningHandle = NSFileHandle(fileDescriptor: CFSocketGetNative(socket), closeOnDealloc: true)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "receiveIncomingConnectionNotification", name: NSFileHandleConnectionAcceptedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("receiveIncomingConnectionNotification:"), name: NSFileHandleConnectionAcceptedNotification, object: nil)
         listeningHandle!.acceptConnectionInBackgroundAndNotify()
         callback(nil, self)
         return self
@@ -79,17 +83,55 @@ class SwiftHTTPServer {
             }
         }
     }
+//    @objc func receiveIncomingConnectionNotification(){
+//        
+//    }
     
-    func receiveIncomingConnectionNotification(notification:NSNotification) -> Void {
+    @objc func receiveIncomingConnectionNotification(notification:NSNotification) -> Void {
         var userInfo = notification.userInfo
         var incomingFileHandle:NSFileHandle? = userInfo[NSFileHandleNotificationFileHandleItem] as? NSFileHandle
-        if incomingFileHandle {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "receiveIncomingDataNotification", name: NSFileHandleDataAvailableNotification, object: incomingFileHandle)
+        if incomingFileHandle != nil{
+            incomingRequests[counter] = NSMutableData()
+            objc_setAssociatedObject(incomingFileHandle, &counterKey, counter, UInt(OBJC_ASSOCIATION_RETAIN))
+            counter++
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "receiveIncomingDataNotification:", name:
+                NSFileHandleDataAvailableNotification
+                , object: incomingFileHandle)
             incomingFileHandle!.waitForDataInBackgroundAndNotify()
         }
         listeningHandle!.acceptConnectionInBackgroundAndNotify()
     }
     
+    @objc func receiveIncomingDataNotification(notifiction:NSNotification) -> Void {
+        var incomingFileHandle:NSFileHandle = notifiction.object as NSFileHandle
+        var fileId = objc_getAssociatedObject(incomingFileHandle, &counterKey) as Int
+        var data = incomingFileHandle.availableData
+        
+        if (data.length == 0){
+            stopReceivingForFileHandle(incomingFileHandle, close: false)
+            return
+        }
+        var messageData:NSMutableData? = incomingRequests[fileId] as? NSMutableData
+        if !messageData {
+            stopReceivingForFileHandle(incomingFileHandle, close: true)
+            return
+        }
+        messageData!.appendData(data)
+        var logMessage = NSString(data: messageData, encoding: NSUTF8StringEncoding)
+        NSLog("%@", logMessage)
+        if (SwiftHTTPObjcUtils.messageHeaderIsComplete(messageData)){
+
+        }
+        incomingFileHandle.waitForDataInBackgroundAndNotify()
+        
+    }
+    
+    func stopReceivingForFileHandle(handle:NSFileHandle, close:Bool)-> Void {
+        if close {
+            handle.closeFile()
+        }
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSFileHandleDataAvailableNotification, object: handle)
+    }
     
 }
 

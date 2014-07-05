@@ -50,4 +50,15 @@
     CFRelease(addressData);
 }
 
++ (BOOL)messageHeaderIsComplete:(NSData*)data{
+    CFHTTPMessageRef message = CFHTTPMessageCreateEmpty(kCFAllocatorDefault, true);
+    CFHTTPMessageAppendBytes(message, data.bytes, data.length);
+    return CFHTTPMessageIsHeaderComplete(message);
+}
+
 @end
+
+
+
+
+

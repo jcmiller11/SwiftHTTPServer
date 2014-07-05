@@ -14,4 +14,6 @@
 
 + (void)socket:(CFSocketRef)socket connectToPort:(NSInteger)port;
 
++ (BOOL)messageHeaderIsComplete:(NSData*)data;
+
 @end
