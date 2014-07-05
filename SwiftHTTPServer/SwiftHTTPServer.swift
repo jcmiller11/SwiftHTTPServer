@@ -29,6 +29,22 @@ class SwiftHTTPReq
         self.method = method.uppercaseString
     }
     
+    init(data:NSDictionary){
+        if let method = data["method"] as? String{
+            self.method = method
+        } else {
+            self.method = "GET"
+        }
+        if let path = data["path"] as? String{
+            self.path = path
+        } else {
+            path = ""
+        }
+        if let body = data["body"] as? String {
+            self.body = body
+        }
+    }
+    
     func route()->String
     {
         return method + " " + path
@@ -139,7 +155,7 @@ class SwiftHTTPServer{
         return self
     }
 
-    func handleRequest(request: SwiftHTTPReq)
+    func handleRequest(request: SwiftHTTPReq) -> SwiftHTTPRes
     {
         let callbackArray : Array<(SwiftHTTPReq, SwiftHTTPRes)->Bool>? = routes[request.route()]
         var res = SwiftHTTPRes()
@@ -157,7 +173,8 @@ class SwiftHTTPServer{
         } else {
             notFound(request, res: res)
         }
-        flush(res)
+        //flush(res)
+        return res
     }
     
     func notFound(req : SwiftHTTPReq,  res: SwiftHTTPRes) -> Bool{
@@ -194,18 +211,23 @@ class SwiftHTTPServer{
         }
         messageData!.appendData(data)
         var logMessage = NSString(data: messageData, encoding: NSUTF8StringEncoding)
-        NSLog("%@", logMessage)
+        
         if (SwiftHTTPObjcUtils.messageHeaderIsComplete(messageData)){
-            var response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 501, nil, kCFHTTPVersion1_1).takeRetainedValue()
-            CFHTTPMessageSetHeaderFieldValue(response, "Content-Type" as CFString, "text/html" as CFString)
-            CFHTTPMessageSetHeaderFieldValue(response, "Connection" as CFString, "close" as CFString);
-            CFHTTPMessageSetBody( response, ("<html><h1>Hello World!</h1></html>" as NSString).dataUsingEncoding(NSUTF8StringEncoding));
-            var headerData = CFHTTPMessageCopySerializedMessage(response).takeRetainedValue() as CFData
+            let requestData = SwiftHTTPObjcUtils.dateForHttpRequest(messageData)
+            var request = SwiftHTTPReq(data: requestData)
+            var response = handleRequest(request)
+            NSLog(response.body)
+            var responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, nil, kCFHTTPVersion1_1).takeRetainedValue()
+            CFHTTPMessageSetHeaderFieldValue(responseMessage, "Content-Type" as CFString, "text/html" as CFString)
+            CFHTTPMessageSetHeaderFieldValue(responseMessage, "Connection" as CFString, "close" as CFString);
+            CFHTTPMessageSetBody( responseMessage, (response.body as NSString).dataUsingEncoding(NSUTF8StringEncoding));
+            var headerData = CFHTTPMessageCopySerializedMessage(responseMessage).takeRetainedValue() as CFData
             incomingFileHandle.writeData(headerData)
         }
         incomingFileHandle.waitForDataInBackgroundAndNotify()
         
     }
+    
     
     func stopReceivingForFileHandle(handle:NSFileHandle, close:Bool)-> Void {
         if close {

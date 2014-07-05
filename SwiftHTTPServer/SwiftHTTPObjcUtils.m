@@ -56,6 +56,20 @@
     return CFHTTPMessageIsHeaderComplete(message);
 }
 
++(NSDictionary *) dateForHttpRequest:(NSData *) data{
+    NSMutableDictionary *dataDictionary = [[NSMutableDictionary alloc] init];
+    CFHTTPMessageRef message = CFHTTPMessageCreateEmpty(kCFAllocatorDefault, true);
+    CFHTTPMessageAppendBytes(message, data.bytes, data.length);
+    NSString *method = (__bridge NSString *) CFHTTPMessageCopyRequestMethod(message);
+    NSURL *url = (__bridge NSURL *)CFHTTPMessageCopyRequestURL(message);
+    NSData *bodyData = (__bridge NSData *)CFHTTPMessageCopyBody(message);
+    NSString *body = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+    NSString *path = [url path];
+    [dataDictionary setObject:method forKey:@"method"];
+    [dataDictionary setObject:path forKey:@"path"];
+    [dataDictionary setObject:body forKey:@"body"];
+    return [dataDictionary copy];
+}
 @end
 
 

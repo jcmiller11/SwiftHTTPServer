@@ -18,9 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         
         server.get("/hello", callback: [{req, res in
-                res.send("działa")
-                res.send("a")
-                return true
+                res.send("<h1>działa</h1>")
+                return false
             }, { req, res in
                 res.send("test");
                 

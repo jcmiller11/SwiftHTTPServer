@@ -15,5 +15,5 @@
 + (void)socket:(CFSocketRef)socket connectToPort:(NSInteger)port;
 
 + (BOOL)messageHeaderIsComplete:(NSData*)data;
-
++(NSDictionary *) dateForHttpRequest:(NSData *) data;
 @end
