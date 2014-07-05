@@ -11,11 +11,11 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet var window: NSWindow
+    var server = SwiftHTTPServer()
     
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
-        
-        var server = SwiftHTTPServer()
+
         
         server.get("/hello", callback: [{req, res in
                 res.send("działa")
