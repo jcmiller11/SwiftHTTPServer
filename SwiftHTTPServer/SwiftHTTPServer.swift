@@ -20,13 +20,17 @@ struct SwiftHTTPServer {
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var test = Dictionary<String, String>()
     
+    func getRoute(route:String) ->String {
+        return "GET " + route
+    }
+    
     mutating func get(route:String, callback: Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >) -> SwiftHTTPServer {
-        routes[route] = callback
+        routes[getRoute(route)] = callback
         return self
     }
     
     mutating func get(route:String, callback:(SwiftHTTPReq, SwiftHTTPRes)-> Bool) -> SwiftHTTPServer {
-        routes[route] = [callback]
+        routes[getRoute(route)] = [callback]
         return self
     }
     
