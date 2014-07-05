@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		932AA4CF19680D4300136C5E /* SwiftHTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */; };
+		9348A2F419683F89005263A0 /* SwiftHTTPObjcUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */; };
 		93FB22B919680C8700A59CDB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB22B819680C8700A59CDB /* main.swift */; };
 		93FB22BB19680C8700A59CDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB22BA19680C8700A59CDB /* AppDelegate.swift */; };
 		93FB22BD19680C8700A59CDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93FB22BC19680C8700A59CDB /* Images.xcassets */; };
@@ -27,6 +28,9 @@
 
 /* Begin PBXFileReference section */
 		932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftHTTPServer.swift; sourceTree = "<group>"; };
+		9348A2EF19683F7F005263A0 /* SwiftHTTPServer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftHTTPServer-Bridging-Header.h"; sourceTree = "<group>"; };
+		9348A2F219683F89005263A0 /* SwiftHTTPObjcUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftHTTPObjcUtils.h; sourceTree = "<group>"; };
+		9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftHTTPObjcUtils.m; sourceTree = "<group>"; };
 		93FB22B319680C8700A59CDB /* SwiftHTTPServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftHTTPServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FB22B719680C8700A59CDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FB22B819680C8700A59CDB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -79,9 +83,12 @@
 			children = (
 				93FB22BA19680C8700A59CDB /* AppDelegate.swift */,
 				932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */,
+				9348A2F219683F89005263A0 /* SwiftHTTPObjcUtils.h */,
+				9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */,
 				93FB22BC19680C8700A59CDB /* Images.xcassets */,
 				93FB22BE19680C8700A59CDB /* MainMenu.xib */,
 				93FB22B619680C8700A59CDB /* Supporting Files */,
+				9348A2EF19683F7F005263A0 /* SwiftHTTPServer-Bridging-Header.h */,
 			);
 			path = SwiftHTTPServer;
 			sourceTree = "<group>";
@@ -211,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9348A2F419683F89005263A0 /* SwiftHTTPObjcUtils.m in Sources */,
 				932AA4CF19680D4300136C5E /* SwiftHTTPServer.swift in Sources */,
 				93FB22BB19680C8700A59CDB /* AppDelegate.swift in Sources */,
 				93FB22B919680C8700A59CDB /* main.swift in Sources */,
@@ -328,10 +336,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SwiftHTTPServer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftHTTPServer/SwiftHTTPServer-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -339,10 +350,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SwiftHTTPServer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftHTTPServer/SwiftHTTPServer-Bridging-Header.h";
 			};
 			name = Release;
 		};
