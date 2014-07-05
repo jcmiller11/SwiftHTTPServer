@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
 
-        public.servePublicFiles(mkPublic, server:server);
+        //public.servePublicFiles(mkPublic, server:server);
 
         server.get("/", callback: {req, res in
             res.redirect("/index.html")
