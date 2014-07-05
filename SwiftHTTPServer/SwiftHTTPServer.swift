@@ -217,7 +217,7 @@ class SwiftHTTPServer{
             var request = SwiftHTTPReq(data: requestData)
             var response = handleRequest(request)
             NSLog(response.body)
-            var responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, nil, kCFHTTPVersion1_1).takeRetainedValue()
+            var responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, response.code, nil, kCFHTTPVersion1_0).takeRetainedValue()
             CFHTTPMessageSetHeaderFieldValue(responseMessage, "Content-Type" as CFString, "text/html" as CFString)
             CFHTTPMessageSetHeaderFieldValue(responseMessage, "Connection" as CFString, "close" as CFString);
             CFHTTPMessageSetBody( responseMessage, (response.body as NSString).dataUsingEncoding(NSUTF8StringEncoding));

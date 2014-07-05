@@ -26,8 +26,9 @@ class SwiftHTTPServerTests: XCTestCase {
         server.get("/", callback: {req, res in
             res.send("test")
             return true })
-        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test" , "body should be test" ) }
-        server.handleRequest(SwiftHTTPReq(path: "/"))
+        
+        let res:SwiftHTTPRes = server.handleRequest(SwiftHTTPReq(path: "/"))
+        XCTAssertEqual(res.body, "test" , "body should be test" )
     }
     
     func testGetTwoCallbacks(){
@@ -42,8 +43,8 @@ class SwiftHTTPServerTests: XCTestCase {
                 return true
             }
         ])
-        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\ntest2" , "body should be test" ) }
-        server.handleRequest(SwiftHTTPReq(path: "/"))
+        let res:SwiftHTTPRes = server.handleRequest(SwiftHTTPReq(path: "/"))
+        XCTAssertEqual(res.body, "test1\ntest2" , "body should be test" )
     }
     
     func testGetTwoChainFunctions(){
@@ -57,8 +58,8 @@ class SwiftHTTPServerTests: XCTestCase {
                 res.send("test2")
                 return true
                 })
-        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\ntest2" , "body should be test" ) }
-        server.handleRequest(SwiftHTTPReq(path: "/"))
+        let res:SwiftHTTPRes = server.handleRequest(SwiftHTTPReq(path: "/"))
+        XCTAssertEqual(res.body, "test1\ntest2" , "body should be test" )
     }
     
     func testGetTwoCallbacksWithFalseAfterFirst(){
@@ -72,8 +73,8 @@ class SwiftHTTPServerTests: XCTestCase {
                 res.send("test2")
                 return true
                 })
-        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\n" , "body should be test" ) }
-        server.handleRequest(SwiftHTTPReq(path: "/"))
+        let res:SwiftHTTPRes = server.handleRequest(SwiftHTTPReq(path: "/"))
+        XCTAssertEqual(res.body, "test1\n" , "body should be test" )
     }
     
     func testGetTwoChainFunctionsWithFalseAfterFirst(){
@@ -87,8 +88,8 @@ class SwiftHTTPServerTests: XCTestCase {
                 res.send("test2")
                 return true
                 })
-        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\n" , "body should be test" ) }
-        server.handleRequest(SwiftHTTPReq(path: "/"))
+        let res:SwiftHTTPRes = server.handleRequest(SwiftHTTPReq(path: "/"))
+        XCTAssertEqual(res.body, "test1\n" , "body should be test" )
     }
     
     func testPOST(){
@@ -97,16 +98,22 @@ class SwiftHTTPServerTests: XCTestCase {
             res.send("post")
             return true
         })
-        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "post" , "body should be test" ) }
-        server.handleRequest(SwiftHTTPReq(path: "/", method: "post"))
+        let res:SwiftHTTPRes = server.handleRequest(SwiftHTTPReq(path: "/", method: "post"))
+        XCTAssertEqual(res.body, "post" , "body should be test" )
+        
     }
     
     /*
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measureBlock() {
+            var a: Double = 1;
+            for i in 1 ... 1000000{
+                var j:Double = Double(i)
+                a = (a+j)/a
+            }
             // Put the code you want to measure the time of here.
         }
-    }*/
-    
+    }
+    */
 }
