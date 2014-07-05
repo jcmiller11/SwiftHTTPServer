@@ -48,8 +48,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         server.start(3000, callback: {err, server in
 //            NSLog("%@", server)
         })
-        let req: SwiftHTTPReq = SwiftHTTPReq(path: "/hello")
-        server.handleRequest(req)
+        //let req: SwiftHTTPReq = SwiftHTTPReq(path: "/index.html")
+        //server.handleRequest(req)
         
     }
     

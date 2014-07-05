@@ -163,8 +163,36 @@ class SwiftHTTPServer{
         return self
     }
 
+    func hadleStaticFile(request: SwiftHTTPReq) -> (SwiftHTTPRes, Bool){
+
+        let resourcePath = NSBundle.mainBundle().resourcePath
+        if var resourcePath = resourcePath {
+            resourcePath += request.path
+            resourcePath = resourcePath.stringByDeletingLastPathComponent
+            NSLog(resourcePath);
+            let directory = NSFileManager.defaultManager().directoryContentsAtPath(resourcePath);
+            if let directory = directory {
+                let fileName = request.path.lastPathComponent
+                for obj: AnyObject in directory{
+                    let file = obj as String
+                    if file == fileName {
+                        var body = NSString.stringWithContentsOfFile(resourcePath + "/" + file, encoding: NSUTF8StringEncoding, error: nil)
+                        var res = SwiftHTTPRes()
+                        res.send(body)
+                        return (res, true)
+                    }
+                }
+            }
+        }
+        var res = SwiftHTTPRes()
+        return (res, false)
+    }
+    
     func handleRequest(request: SwiftHTTPReq) -> SwiftHTTPRes
     {
+
+        let (staticRes, isLoaded) = hadleStaticFile(request)
+        if !isLoaded{
         let callbackArray : Array<(SwiftHTTPReq, SwiftHTTPRes)->Bool>? = routes[request.route()]
         var res = SwiftHTTPRes()
         if let callbackArray = callbackArray
@@ -189,6 +217,9 @@ class SwiftHTTPServer{
         }
         //flush(res)
         return res
+        } else {
+            return staticRes
+        }
     }
     
     func notFound(req : SwiftHTTPReq,  res: SwiftHTTPRes) -> Bool{
