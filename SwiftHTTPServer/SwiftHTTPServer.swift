@@ -196,7 +196,12 @@ class SwiftHTTPServer{
         var logMessage = NSString(data: messageData, encoding: NSUTF8StringEncoding)
         NSLog("%@", logMessage)
         if (SwiftHTTPObjcUtils.messageHeaderIsComplete(messageData)){
-
+            var response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 501, nil, kCFHTTPVersion1_1).takeRetainedValue()
+            CFHTTPMessageSetHeaderFieldValue(response, "Content-Type" as CFString, "text/html" as CFString)
+            CFHTTPMessageSetHeaderFieldValue(response, "Connection" as CFString, "close" as CFString);
+            CFHTTPMessageSetBody( response, ("<html><h1>Hello World!</h1></html>" as NSString).dataUsingEncoding(NSUTF8StringEncoding));
+            var headerData = CFHTTPMessageCopySerializedMessage(response).takeRetainedValue() as CFData
+            incomingFileHandle.writeData(headerData)
         }
         incomingFileHandle.waitForDataInBackgroundAndNotify()
         
