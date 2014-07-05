@@ -12,8 +12,11 @@ class SwiftHTTPStatic: NSObject {
 
     
     func servePublicFiles(path:String, server:SwiftHTTPServer)->Void{
-        var arr = NSFileManager.defaultManager().directoryContentsAtPath(path);
-        for i : AnyObject in arr {
+        var arr:Array? = NSFileManager.defaultManager().directoryContentsAtPath(path);
+        if (!arr){
+            return
+        }
+        for i : AnyObject in arr! {
             var file = i as String
             server.get("/" + file, callback: {req, res in
                 var body = NSString.stringWithContentsOfFile(path + file, encoding: NSUTF8StringEncoding, error: nil)
