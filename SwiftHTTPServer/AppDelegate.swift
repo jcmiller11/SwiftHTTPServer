@@ -17,17 +17,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         var server = SwiftHTTPServer()
         
-        server.get("/hello", callback: {req, res in
-            NSLog("działa")
-            return true;
-            }
+        server.get("/hello", callback: [{req, res in
+                res.send("działa")
+                return true
+            }, { req, res in
+                res.send("test");
+                
+                return false
+            }, { req, res in
+                NSLog("test 2");
+                return true
+            }]
+            )
+        server.get("/hello", callback: [
+            {
+                req, res in
+                res.send("anather hello")
+                return false
+            }]
         )
         
         server.start(3000, callback: {err, server in
 //            NSLog("%@", server)
-            })
+        })
+        let req: SwiftHTTPReq = SwiftHTTPReq(path: "/hello")
+        server.handleRequest(req)
         
     }
+    
     
     func applicationWillTerminate(aNotification: NSNotification?) {
         // Insert code here to tear down your application
