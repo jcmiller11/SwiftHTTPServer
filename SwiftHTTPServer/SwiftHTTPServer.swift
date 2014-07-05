@@ -9,14 +9,28 @@
 import Cocoa
 
 class SwiftHTTPReq: NSObject {
-
+    let path:String
+    let method:String
+    init(path:String){
+        self.path = path
+        method = "GET"
+    }
+    init(path:String, method:String){
+        self.path = path
+        self.method = method.uppercaseString
+    }
+    func route()->String {
+        return method + " " + path
+    }
 }
 
 class SwiftHTTPRes: NSObject {
-    
+    func send(body:String) {
+        NSLog(body)
+    }
 }
 
-struct SwiftHTTPServer {
+class SwiftHTTPServer {
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var test = Dictionary<String, String>()
     
@@ -24,12 +38,18 @@ struct SwiftHTTPServer {
         return "GET " + route
     }
     
-    mutating func get(route:String, callback: Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >) -> SwiftHTTPServer {
-        routes[getRoute(route)] = callback
-        return self
+    func get(route:String, callback: Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >) -> SwiftHTTPServer {
+        let existingRoutes:Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >? = routes[getRoute(route)]
+        if var existingRoutes = existingRoutes{
+            existingRoutes += callback
+            routes[getRoute(route)] = existingRoutes
+        } else {
+            routes[getRoute(route)] = callback
+        }
+            return self
     }
     
-    mutating func get(route:String, callback:(SwiftHTTPReq, SwiftHTTPRes)-> Bool) -> SwiftHTTPServer {
+    func get(route:String, callback:(SwiftHTTPReq, SwiftHTTPRes)-> Bool) -> SwiftHTTPServer {
         routes[getRoute(route)] = [callback]
         return self
     }
@@ -37,5 +57,17 @@ struct SwiftHTTPServer {
     func start(port:Int, callback: (NSError?, SwiftHTTPServer) -> Void) -> SwiftHTTPServer {
         callback(nil, self)
         return self
+    }
+
+    func handleRequest(request:SwiftHTTPReq){
+        let callbackArray:Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >? = routes[request.route()]
+        if let callbackArray = callbackArray {
+            var res = SwiftHTTPRes()
+            for callback in callbackArray{
+                if callback(request, res) == false{
+                    break
+                }
+            }
+        }
     }
 }
