@@ -8,6 +8,8 @@
 
 import Cocoa
 
+let mkPublic:String = "/Users/marekkotewicz/test/SwiftHTTPServer/Public/"
+
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet var window: NSWindow
@@ -15,6 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
+
+        SwiftHTTPStatic().servePublicFiles(mkPublic, server:server);
 
         
         server.get("/hello", callback: [{req, res in

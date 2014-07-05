@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		930795AF19686CFA00B28994 /* SwiftHTTPStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930795AE19686CFA00B28994 /* SwiftHTTPStatic.swift */; };
+		930795B519686FAB00B28994 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 930795B419686FAB00B28994 /* index.html */; };
+		930795B81968721000B28994 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 930795B71968720F00B28994 /* test.json */; };
 		932AA4CF19680D4300136C5E /* SwiftHTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */; };
 		9348A2F419683F89005263A0 /* SwiftHTTPObjcUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */; };
 		93FB22B919680C8700A59CDB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB22B819680C8700A59CDB /* main.swift */; };
@@ -27,6 +30,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		930795AE19686CFA00B28994 /* SwiftHTTPStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftHTTPStatic.swift; sourceTree = "<group>"; };
+		930795B419686FAB00B28994 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		930795B71968720F00B28994 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftHTTPServer.swift; sourceTree = "<group>"; };
 		9348A2EF19683F7F005263A0 /* SwiftHTTPServer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftHTTPServer-Bridging-Header.h"; sourceTree = "<group>"; };
 		9348A2F219683F89005263A0 /* SwiftHTTPObjcUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftHTTPObjcUtils.h; sourceTree = "<group>"; };
@@ -60,9 +66,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		930795B319686FAB00B28994 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				930795B419686FAB00B28994 /* index.html */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
 		93FB22AA19680C8700A59CDB = {
 			isa = PBXGroup;
 			children = (
+				930795B319686FAB00B28994 /* Public */,
 				93FB22B519680C8700A59CDB /* SwiftHTTPServer */,
 				93FB22C819680C8800A59CDB /* SwiftHTTPServerTests */,
 				93FB22B419680C8700A59CDB /* Products */,
@@ -83,8 +98,10 @@
 			children = (
 				93FB22BA19680C8700A59CDB /* AppDelegate.swift */,
 				932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */,
+				930795AE19686CFA00B28994 /* SwiftHTTPStatic.swift */,
 				9348A2F219683F89005263A0 /* SwiftHTTPObjcUtils.h */,
 				9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */,
+				930795B71968720F00B28994 /* test.json */,
 				93FB22BC19680C8700A59CDB /* Images.xcassets */,
 				93FB22BE19680C8700A59CDB /* MainMenu.xib */,
 				93FB22B619680C8700A59CDB /* Supporting Files */,
@@ -199,6 +216,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				930795B519686FAB00B28994 /* index.html in Resources */,
+				930795B81968721000B28994 /* test.json in Resources */,
 				93FB22BD19680C8700A59CDB /* Images.xcassets in Resources */,
 				93FB22C019680C8700A59CDB /* MainMenu.xib in Resources */,
 			);
@@ -220,6 +239,7 @@
 			files = (
 				9348A2F419683F89005263A0 /* SwiftHTTPObjcUtils.m in Sources */,
 				932AA4CF19680D4300136C5E /* SwiftHTTPServer.swift in Sources */,
+				930795AF19686CFA00B28994 /* SwiftHTTPStatic.swift in Sources */,
 				93FB22BB19680C8700A59CDB /* AppDelegate.swift in Sources */,
 				93FB22B919680C8700A59CDB /* main.swift in Sources */,
 			);
