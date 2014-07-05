@@ -14,23 +14,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
-
+        
         let server = SwiftHTTPServer.server
         
         server.get("/hello", callback: {req, res in
             
             return true;
-            }).get("/world", callback: [
-                { req, res in
-                    
-                    return true
-                }, {req, res in
-                    
-                    return true
-                }]
-            ).start(3000, callback: {err, server in
-                NSLog("%@", server)
-                })
+            }
+        )
+        
+        server.start(3000, callback: {err, server in
+            NSLog("%@", server.routes)
+            })
         
     }
     
