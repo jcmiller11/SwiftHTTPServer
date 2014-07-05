@@ -7,11 +7,13 @@
 //
 
 import XCTest
+import SwiftHTTPServer
 
 class SwiftHTTPServerTests: XCTestCase {
-    
+    var server:SwiftHTTPServer = SwiftHTTPServer()
     override func setUp() {
         super.setUp()
+        server = SwiftHTTPServer()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -20,7 +22,7 @@ class SwiftHTTPServerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func test() {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
     }

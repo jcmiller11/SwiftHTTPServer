@@ -25,7 +25,11 @@ class SwiftHTTPReq: NSObject {
 }
 
 class SwiftHTTPRes: NSObject {
+    var body = ""
     func send(body:String) {
+        self.body += body
+    }
+    func flush(){
         NSLog(body)
     }
 }
@@ -46,11 +50,17 @@ class SwiftHTTPServer {
         } else {
             routes[getRoute(route)] = callback
         }
-            return self
+        return self
     }
     
     func get(route:String, callback:(SwiftHTTPReq, SwiftHTTPRes)-> Bool) -> SwiftHTTPServer {
-        routes[getRoute(route)] = [callback]
+        let existingRoutes:Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >? = routes[getRoute(route)]
+        if var existingRoutes = existingRoutes{
+            existingRoutes += callback
+            routes[getRoute(route)] = existingRoutes
+        } else {
+            routes[getRoute(route)] = [callback]
+        }
         return self
     }
     
@@ -68,6 +78,7 @@ class SwiftHTTPServer {
                     break
                 }
             }
+            res.flush()
         }
     }
 }

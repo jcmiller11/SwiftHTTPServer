@@ -19,22 +19,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         server.get("/hello", callback: [{req, res in
                 res.send("działa")
+                res.send("a")
                 return true
             }, { req, res in
                 res.send("test");
                 
-                return false
+                return true
             }, { req, res in
                 NSLog("test 2");
                 return true
             }]
             )
-        server.get("/hello", callback: [
+        server.get("/hello", callback:
             {
                 req, res in
                 res.send("anather hello")
                 return false
-            }]
+            }
         )
         
         server.start(3000, callback: {err, server in
