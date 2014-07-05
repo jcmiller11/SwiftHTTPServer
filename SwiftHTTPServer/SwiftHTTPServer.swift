@@ -16,31 +16,17 @@ class SwiftHTTPRes: NSObject {
     
 }
 
-class SwiftHTTPServer: NSObject {
+struct SwiftHTTPServer {
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var test = Dictionary<String, String>()
     
-    class var server: SwiftHTTPServer {
-        struct Singleton {
-            static let instance = SwiftHTTPServer()
-        }
-        return Singleton.instance
-    }
-    
-    func get(route:String, callback: Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >) -> SwiftHTTPServer {
-        var existingRoutes:Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >? = routes[route]
-        if let existingRoutes = existingRoutes{
-            routes[route] = existingRoutes + callback
-        }
+    mutating func get(route:String, callback: Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >) -> SwiftHTTPServer {
+        routes[route] = callback
         return self
     }
     
-    func get(route:String, callback:(SwiftHTTPReq, SwiftHTTPRes)-> Bool) -> SwiftHTTPServer {
-        var existingRoutes:Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >? = routes[route]
-        if var existingRoutes = existingRoutes{
-            existingRoutes.append(callback)
-        }
-        
+    mutating func get(route:String, callback:(SwiftHTTPReq, SwiftHTTPRes)-> Bool) -> SwiftHTTPServer {
+        routes[route] = [callback]
         return self
     }
     
