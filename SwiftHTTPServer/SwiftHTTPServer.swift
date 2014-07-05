@@ -33,6 +33,11 @@ class SwiftHTTPRes: NSObject {
 class SwiftHTTPServer {
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var socket = SwiftHTTPObjcUtils.CFSocketCreate().takeRetainedValue()
+    var listeningHandle:NSFileHandle?
+    
+    init () {
+        
+    }
     
     func getRoute(route:String) ->String {
         return "GET " + route
@@ -56,7 +61,9 @@ class SwiftHTTPServer {
     
     func start(port:Int, callback: (NSError?, SwiftHTTPServer) -> Void) -> SwiftHTTPServer {
         SwiftHTTPObjcUtils.socket(socket, connectToPort: port)
-        
+        listeningHandle = NSFileHandle(fileDescriptor: CFSocketGetNative(socket), closeOnDealloc: true)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "receiveIncomingConnectionNotification", name: NSFileHandleConnectionAcceptedNotification, object: nil)
+        listeningHandle!.acceptConnectionInBackgroundAndNotify()
         callback(nil, self)
         return self
     }
@@ -72,4 +79,27 @@ class SwiftHTTPServer {
             }
         }
     }
+    
+    func receiveIncomingConnectionNotification(notification:NSNotification) -> Void {
+        var userInfo = notification.userInfo
+        var incomingFileHandle:NSFileHandle? = userInfo[NSFileHandleNotificationFileHandleItem] as? NSFileHandle
+        if incomingFileHandle {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "receiveIncomingDataNotification", name: NSFileHandleDataAvailableNotification, object: incomingFileHandle)
+            incomingFileHandle!.waitForDataInBackgroundAndNotify()
+        }
+        listeningHandle!.acceptConnectionInBackgroundAndNotify()
+    }
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
