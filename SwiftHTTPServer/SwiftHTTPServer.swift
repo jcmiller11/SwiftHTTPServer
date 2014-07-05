@@ -32,7 +32,7 @@ class SwiftHTTPRes: NSObject {
 
 class SwiftHTTPServer {
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
-    var test = Dictionary<String, String>()
+    var socket = SwiftHTTPObjcUtils.CFSocketCreate().takeRetainedValue()
     
     func getRoute(route:String) ->String {
         return "GET " + route
@@ -55,6 +55,8 @@ class SwiftHTTPServer {
     }
     
     func start(port:Int, callback: (NSError?, SwiftHTTPServer) -> Void) -> SwiftHTTPServer {
+        SwiftHTTPObjcUtils.socket(socket, connectToPort: port)
+        
         callback(nil, self)
         return self
     }
