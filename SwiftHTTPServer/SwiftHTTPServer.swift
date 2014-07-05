@@ -9,7 +9,7 @@
 import Cocoa
 import ObjectiveC
 
-var counterKey = "counter"
+var fullData = "fullData"
 
 class SwiftHTTPReq: NSObject {
     let path:String
@@ -38,7 +38,6 @@ class SwiftHTTPServer{
     var socket = SwiftHTTPObjcUtils.CFSocketCreate().takeRetainedValue()
     var listeningHandle:NSFileHandle?
     var incomingRequests:NSMutableDictionary = NSMutableDictionary.dictionary()
-    var counter:Int = 0
     
     init () {
     }
@@ -83,17 +82,12 @@ class SwiftHTTPServer{
             }
         }
     }
-//    @objc func receiveIncomingConnectionNotification(){
-//        
-//    }
     
     @objc func receiveIncomingConnectionNotification(notification:NSNotification) -> Void {
         var userInfo = notification.userInfo
         var incomingFileHandle:NSFileHandle? = userInfo[NSFileHandleNotificationFileHandleItem] as? NSFileHandle
         if incomingFileHandle != nil{
-            incomingRequests[counter] = NSMutableData()
-            objc_setAssociatedObject(incomingFileHandle, &counterKey, counter, UInt(OBJC_ASSOCIATION_RETAIN))
-            counter++
+            objc_setAssociatedObject(incomingFileHandle, &fullData, NSMutableData(), UInt(OBJC_ASSOCIATION_RETAIN))
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "receiveIncomingDataNotification:", name:
                 NSFileHandleDataAvailableNotification
                 , object: incomingFileHandle)
@@ -104,14 +98,13 @@ class SwiftHTTPServer{
     
     @objc func receiveIncomingDataNotification(notifiction:NSNotification) -> Void {
         var incomingFileHandle:NSFileHandle = notifiction.object as NSFileHandle
-        var fileId = objc_getAssociatedObject(incomingFileHandle, &counterKey) as Int
+        var messageData = objc_getAssociatedObject(incomingFileHandle, &fullData) as? NSMutableData
         var data = incomingFileHandle.availableData
         
         if (data.length == 0){
             stopReceivingForFileHandle(incomingFileHandle, close: false)
             return
         }
-        var messageData:NSMutableData? = incomingRequests[fileId] as? NSMutableData
         if !messageData {
             stopReceivingForFileHandle(incomingFileHandle, close: true)
             return
