@@ -22,16 +22,91 @@ class SwiftHTTPServerTests: XCTestCase {
         super.tearDown()
     }
     
-    func test() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+    func testOneGet() {
+        server.get("/", callback: {req, res in
+            res.send("test")
+            return true })
+        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test" , "body should be test" ) }
+        server.handleRequest(SwiftHTTPReq(path: "/"))
     }
     
+    func testGetTwoCallbacks(){
+        server.get("/", callback: [
+            {
+                req, res in
+                res.send("test1\n")
+                return true
+            }, {
+                req, res in
+                res.send("test2")
+                return true
+            }
+        ])
+        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\ntest2" , "body should be test" ) }
+        server.handleRequest(SwiftHTTPReq(path: "/"))
+    }
+    
+    func testGetTwoChainFunctions(){
+        server.get("/", callback:
+            {
+                req, res in
+                res.send("test1\n")
+                return true
+            }).get("/", callback: {
+                req, res in
+                res.send("test2")
+                return true
+                })
+        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\ntest2" , "body should be test" ) }
+        server.handleRequest(SwiftHTTPReq(path: "/"))
+    }
+    
+    func testGetTwoCallbacksWithFalseAfterFirst(){
+        server.get("/", callback:
+            {
+                req, res in
+                res.send("test1\n")
+                return false
+            }).get("/", callback: {
+                req, res in
+                res.send("test2")
+                return true
+                })
+        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\n" , "body should be test" ) }
+        server.handleRequest(SwiftHTTPReq(path: "/"))
+    }
+    
+    func testGetTwoChainFunctionsWithFalseAfterFirst(){
+        server.get("/", callback:
+            {
+                req, res in
+                res.send("test1\n")
+                return false
+            }).get("/", callback: {
+                req, res in
+                res.send("test2")
+                return true
+                })
+        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "test1\n" , "body should be test" ) }
+        server.handleRequest(SwiftHTTPReq(path: "/"))
+    }
+    
+    func testPOST(){
+        server.post("/", callback:{
+            req, res in
+            res.send("post")
+            return true
+        })
+        server.flush = { (res:SwiftHTTPRes) in XCTAssertEqual(res.body, "post" , "body should be test" ) }
+        server.handleRequest(SwiftHTTPReq(path: "/", method: "post"))
+    }
+    
+    /*
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measureBlock() {
             // Put the code you want to measure the time of here.
         }
-    }
+    }*/
     
 }
