@@ -13,7 +13,7 @@ var fullData = "fullData"
 
 class SwiftHTTPReq
 {
-    let path : String
+    var path : String
     let method : String
     let body : String?
     
@@ -55,9 +55,17 @@ class SwiftHTTPRes
 {
     var body = ""
     var code = 200
+    var redirectPath = ""
+    var shouldRedirect = false
     func send(body: String)
     {
         self.body += body
+    }
+    
+    func redirect(path: String)
+    {
+        shouldRedirect = true
+        redirectPath = path
     }
     
     func flush()
@@ -168,6 +176,12 @@ class SwiftHTTPServer{
                 {
                         break
                 }
+                if res.shouldRedirect == true
+                {
+                    request.path = res.redirectPath
+                    res = handleRequest(request)
+                    break
+                }
             }
             
         } else {
@@ -223,9 +237,15 @@ class SwiftHTTPServer{
             CFHTTPMessageSetBody( responseMessage, (response.body as NSString).dataUsingEncoding(NSUTF8StringEncoding));
             var headerData = CFHTTPMessageCopySerializedMessage(responseMessage).takeRetainedValue() as CFData
             incomingFileHandle.writeData(headerData)
+
+            // close
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: NSFileHandleDataAvailableNotification, object: incomingFileHandle)
+            incomingFileHandle.closeFile()
+            
+        } else {
+            incomingFileHandle.waitForDataInBackgroundAndNotify()
         }
-        incomingFileHandle.waitForDataInBackgroundAndNotify()
-        
+
     }
     
     
