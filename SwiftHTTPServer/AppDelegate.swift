@@ -14,12 +14,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet var window: NSWindow
     var server = SwiftHTTPServer()
-    
+    var public = SwiftHTTPStatic()
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
 
-        SwiftHTTPStatic().servePublicFiles(mkPublic, server:server);
+        public.servePublicFiles(mkPublic, server:server);
 
+        server.get("/", callback: {req, res in
+            res.redirect("/index.html")
+            return true
+        })
         
         server.get("/hello", callback: [{req, res in
                 res.send("<h1>działa</h1>")
