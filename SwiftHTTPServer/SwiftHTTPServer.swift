@@ -54,7 +54,6 @@ class SwiftHTTPServer{
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var socket = SwiftHTTPObjcUtils.CFSocketCreate().takeRetainedValue()
     var listeningHandle:NSFileHandle?
-    var incomingRequests:NSMutableDictionary = NSMutableDictionary.dictionary()
     var flush = {(res: SwiftHTTPRes)in NSLog(res.body) }
     
     init () {
