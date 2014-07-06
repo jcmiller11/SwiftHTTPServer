@@ -16,7 +16,6 @@ class SwiftHTTPReq
     var path : String
     let method : String
     let body : String?
-    let json :NSDictionary?
     let params: NSDictionary?
     let post: NSDictionary?
     init(path: String)
@@ -44,9 +43,6 @@ class SwiftHTTPReq
         }
         if let body = data["body"] as? String {
             self.body = body
-        }
-        if let json = data["json"] as? NSDictionary{
-            self.json = json
         }
         if let params = data["params"] as? NSDictionary{
             self.params = params

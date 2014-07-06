@@ -83,7 +83,7 @@
         [dataDictionary setObject:body forKey:@"body"];
     }
     if (json) {
-            [dataDictionary setObject:json forKey:@"json"];
+            [dataDictionary setObject:json forKey:@"post"];
     } else {
         NSDictionary *post = [[self class] getDataOfQueryString:body];
         if (post && [post count] > 0) {

@@ -44,11 +44,6 @@ class Routes: NSObject {
             if var body = req.body {
                 res.send("body: " + body + "\n")
             }
-            if let json = req.json {
-                let jsonString:String = NSString(format: "%@", json)
-                res.send("json: " + jsonString + "\n")
-                NSLog("%@", json)
-            }
             if let post = req.post{
                 let postString:String = NSString(format: "%@", post)
                 res.send("post: " + postString + "\n")
