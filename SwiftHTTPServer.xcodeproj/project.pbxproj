@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		930795AF19686CFA00B28994 /* SwiftHTTPStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930795AE19686CFA00B28994 /* SwiftHTTPStatic.swift */; };
 		930795B519686FAB00B28994 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 930795B419686FAB00B28994 /* index.html */; };
 		930795B81968721000B28994 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 930795B71968720F00B28994 /* test.json */; };
 		932AA4CF19680D4300136C5E /* SwiftHTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */; };
 		9348A2F419683F89005263A0 /* SwiftHTTPObjcUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */; };
+		93910E29196943A900B11B44 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93910E28196943A900B11B44 /* Routes.swift */; };
 		93FB22B919680C8700A59CDB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB22B819680C8700A59CDB /* main.swift */; };
 		93FB22BB19680C8700A59CDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB22BA19680C8700A59CDB /* AppDelegate.swift */; };
 		93FB22BD19680C8700A59CDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93FB22BC19680C8700A59CDB /* Images.xcassets */; };
@@ -30,13 +30,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		930795AE19686CFA00B28994 /* SwiftHTTPStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftHTTPStatic.swift; sourceTree = "<group>"; };
 		930795B419686FAB00B28994 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		930795B71968720F00B28994 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftHTTPServer.swift; sourceTree = "<group>"; };
 		9348A2EF19683F7F005263A0 /* SwiftHTTPServer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftHTTPServer-Bridging-Header.h"; sourceTree = "<group>"; };
 		9348A2F219683F89005263A0 /* SwiftHTTPObjcUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftHTTPObjcUtils.h; sourceTree = "<group>"; };
 		9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftHTTPObjcUtils.m; sourceTree = "<group>"; };
+		93910E28196943A900B11B44 /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		93FB22B319680C8700A59CDB /* SwiftHTTPServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftHTTPServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FB22B719680C8700A59CDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FB22B819680C8700A59CDB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -97,8 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				93FB22BA19680C8700A59CDB /* AppDelegate.swift */,
+				93910E28196943A900B11B44 /* Routes.swift */,
 				932AA4CE19680D4300136C5E /* SwiftHTTPServer.swift */,
-				930795AE19686CFA00B28994 /* SwiftHTTPStatic.swift */,
 				9348A2F219683F89005263A0 /* SwiftHTTPObjcUtils.h */,
 				9348A2F319683F89005263A0 /* SwiftHTTPObjcUtils.m */,
 				930795B71968720F00B28994 /* test.json */,
@@ -239,7 +239,7 @@
 			files = (
 				9348A2F419683F89005263A0 /* SwiftHTTPObjcUtils.m in Sources */,
 				932AA4CF19680D4300136C5E /* SwiftHTTPServer.swift in Sources */,
-				930795AF19686CFA00B28994 /* SwiftHTTPStatic.swift in Sources */,
+				93910E29196943A900B11B44 /* Routes.swift in Sources */,
 				93FB22BB19680C8700A59CDB /* AppDelegate.swift in Sources */,
 				93FB22B919680C8700A59CDB /* main.swift in Sources */,
 			);
