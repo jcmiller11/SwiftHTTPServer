@@ -128,6 +128,15 @@
     return (__bridge NSString *)mimeType ;
 }
 
++ (NSString*)JSONFromArray:(NSArray *)array{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
 @end
 
 

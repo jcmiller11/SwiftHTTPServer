@@ -32,7 +32,10 @@
                     {title: 'T-Shirts', quantity:0, price: 10.99},
                     {title: 'MacBook', quantity:0, price: 1999.99}
                 ];
-                $scope.boughtItems = [];
+                
+                $http.get("/api/boughtItems").success(function (items) {
+                                                      $scope.boughtItems = items;
+                                                      });
                 
                 $scope.onBuy = function (){
                     var totalPrice = 0;
@@ -48,10 +51,12 @@
                     });
                     
                     if (totalPrice > 0){
-                        $scope.boughtItems.push({
-                                                desc: totalDesc,
-                                                price: totalPrice
-                                                })
+                        var item = {
+                            desc: totalDesc,
+                            price: totalPrice
+                        };
+                        $scope.boughtItems.push(item);
+                        $http.post("/api/buy", item);
                     }
                     
                     //$http.post("/api". {data: "hello world!"});

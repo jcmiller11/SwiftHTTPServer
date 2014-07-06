@@ -9,6 +9,7 @@
 import Cocoa
 
 class Routes: NSObject {
+    var boughtItemsArr:NSMutableArray = NSMutableArray.array()
 
     func authenticate()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
         return {req, res in
@@ -36,4 +37,25 @@ class Routes: NSObject {
             return true
         }
     }
+    
+    func buy()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
+        return {req, res in
+            if let json = req.json {
+                self.boughtItemsArr.addObject(json)
+            }
+            res.send("")
+            return true
+        }
+    }
+    
+    func boughtItems()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
+        return {req, res in
+            var responseString = SwiftHTTPObjcUtils.JSONFromArray(self.boughtItemsArr)
+            res.send(responseString)
+            return true
+        }
+    }
+    
+    
+    
 }

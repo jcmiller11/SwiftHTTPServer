@@ -17,4 +17,6 @@
 + (BOOL)messageHeaderIsComplete:(NSData*)data;
 +(NSDictionary *) dateForHttpRequest:(NSData *) data;
 + (NSString*) mimeTypeForFileAtPath: (NSString *) path;
+
++ (NSString*)JSONFromArray:(NSArray*)array;
 @end

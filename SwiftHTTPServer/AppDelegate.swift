@@ -19,7 +19,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         server.get("/", callback: routes.redirectToIndex())
         server.get("/hello", callback: routes.hello())
         server.get("/world", callback: [routes.authenticate(), routes.world()])
+        server.get("/api/boughtItems", callback: routes.boughtItems())
+        server.post("/api/buy", callback: routes.buy())
         
+
         server.get("/inline", callback: {req, res in
             res.send("<h1>Inline!</h1>")
             return true
