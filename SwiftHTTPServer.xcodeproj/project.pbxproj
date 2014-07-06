@@ -75,10 +75,10 @@
 		930795B319686FAB00B28994 /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				930795B419686FAB00B28994 /* index.html */,
 				93910E2A19694A3B00B11B44 /* ang.html */,
 				D9B92AD819688D79000DE563 /* Swift-Cheat-Sheet.pdf */,
 				D9B92ADA19688D86000DE563 /* Mila-Kunis-19.jpg */,
-				930795B419686FAB00B28994 /* index.html */,
 			);
 			path = Public;
 			sourceTree = "<group>";
