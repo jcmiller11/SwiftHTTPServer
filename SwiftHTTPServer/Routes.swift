@@ -40,7 +40,7 @@ class Routes: NSObject {
     
     func buy()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
         return {req, res in
-            if let json = req.json {
+            if let json = req.post {
                 self.boughtItemsArr.addObject(json)
             }
             res.send("")
@@ -57,5 +57,25 @@ class Routes: NSObject {
     }
     
     
+    func test()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
+        return {
+            req, res in
+            res.send("<pre>")
+            if var body = req.body {
+                res.send("body: " + body + "\n")
+            }
+            if let post = req.post{
+                let postString:String = NSString(format: "%@", post)
+                res.send("post: " + postString + "\n")
+                NSLog("%@", post)
+            }
     
+            if let params = req.params{
+                let paramsString:String = NSString(format: "%@", params)
+                res.send("GET params: " + paramsString + "\n")
+                NSLog("%@", params)
+            }
+            return true
+        }
+    }
 }
