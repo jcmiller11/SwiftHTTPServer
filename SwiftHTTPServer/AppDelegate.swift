@@ -20,6 +20,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         server.get("/hello", callback: routes.hello())
         server.get("/world", callback: [routes.authenticate(), routes.world()])
 
+        server.get("/inline", callback: {req, res in
+            res.send("<h1>Inline!</h1>")
+            return true
+            })
         
         server.start(3000, callback: {err, server in
 
