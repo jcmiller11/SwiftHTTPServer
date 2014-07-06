@@ -8,49 +8,26 @@
 
 import Cocoa
 
-let mkPublic:String = "/Users/marekkotewicz/test/SwiftHTTPServer/Public/"
-
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet var window: NSWindow
     var server = SwiftHTTPServer()
-    var public = SwiftHTTPStatic()
+    var routes = Routes()
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
 
-        //public.servePublicFiles(mkPublic, server:server);
+        server.get("/", callback: routes.redirectToIndex())
+        server.get("/hello", callback: routes.hello())
+        server.get("/world", callback: [routes.authenticate(), routes.world()])
 
-        server.get("/", callback: {req, res in
-            res.redirect("/index.html")
+        server.get("/inline", callback: {req, res in
+            res.send("<h1>Inline!</h1>")
             return true
-        })
-        
-        server.get("/hello", callback: [{req, res in
-                res.send("<h1>działa</h1>")
-                return true
-            }, { req, res in
-                res.send("test\n");
-                
-                return true
-            }, { req, res in
-                res.send("test 2 \n")
-                return true
-            }]
-            )
-        server.get("/hello", callback:
-            {
-                req, res in
-                res.send("anather hello")
-                return false
-            }
-        )
+            })
         
         server.start(3000, callback: {err, server in
-//            NSLog("%@", server)
+
         })
-        //let req: SwiftHTTPReq = SwiftHTTPReq(path: "/index.html")
-        //server.handleRequest(req)
-        
     }
     
     
