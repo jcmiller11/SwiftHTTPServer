@@ -79,12 +79,14 @@
     
     [dataDictionary setObject:method forKey:@"method"];
     [dataDictionary setObject:path forKey:@"path"];
-    [dataDictionary setObject:body forKey:@"body"];
+    if (body && [body length] > 0) {
+        [dataDictionary setObject:body forKey:@"body"];
+    }
     if (json) {
             [dataDictionary setObject:json forKey:@"json"];
     } else {
         NSDictionary *post = [[self class] getDataOfQueryString:body];
-        if (post) {
+        if (post && [post count] > 0) {
             [dataDictionary setObject:post forKey:@"post"];
         }
     }

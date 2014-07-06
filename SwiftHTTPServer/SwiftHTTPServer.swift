@@ -21,13 +21,13 @@ class SwiftHTTPReq
     let post: NSDictionary?
     init(path: String)
     {
-        self.path = path
+        self.path = removeGETparameters(path)
         method = "GET"
     }
 
     init(path: String, method: String)
     {
-        self.path = path
+        self.path = removeGETparameters(path)
         self.method = method.uppercaseString
     }
     
@@ -38,7 +38,7 @@ class SwiftHTTPReq
             self.method = "GET"
         }
         if let path = data["path"] as? String{
-            self.path = path
+            self.path = removeGETparameters(path)
         } else {
             path = ""
         }
@@ -56,10 +56,20 @@ class SwiftHTTPReq
         }
     }
     
+    
     func route()->String
     {
         return method + " " + path
     }
+}
+
+func removeGETparameters(pathWithParameters:String) -> String{
+    //componentsSeparatedByString
+    let components = pathWithParameters.componentsSeparatedByString("?")
+    if components.count > 0{
+        return components[0]
+    }
+    return pathWithParameters
 }
 
 class SwiftHTTPRes
@@ -211,6 +221,7 @@ class SwiftHTTPServer{
     {
         let (staticRes, isLoaded) = hadleStaticFile(request)
         if !isLoaded{
+            NSLog(request.route())
         let callbackArray : Array<(SwiftHTTPReq, SwiftHTTPRes)->Bool>? = routes[request.route()]
         var res = SwiftHTTPRes()
         if let callbackArray = callbackArray
