@@ -1,0 +1,63 @@
+<html ng-app>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"></link>
+    </head>
+    <body ng-controller = 'TestController'>
+        <div class="col-md-4">
+            <legend><h1>Available items</h1></legend>
+            <div class="list-group">
+                <a class="list-group-item" ng-repeat='item in items' >
+                    <h2>{{item.title}}</h2>
+                    <input class="form-control" ng-model='item.quantity' ng-maxlength='3' ng-minlength='1' type='number'></input>
+                    <span><b>PRICE: </b>{{item.price | currency}}</span>
+                    <span class="pull-right"><b>TOTAL: </b>{{item.price * item.quantity | currency}}</span>
+                </a>
+            </div>
+            <button type="sumbit" class="btn btn-success pull-right" ng-click="onBuy()">BUY</button>
+        </div>
+        <div class="col-md-8">
+            <legend><h1>Your Order</h1></legend>
+            <div class="list-group">
+                <a class="list-group-item" ng-repeat='item in boughtItems'>
+                    <span>{{item.desc}}</span>
+                    <span class="pull-right"><b>TOTAL: {{item.price | currency}}</b></span>
+                </a>
+            </div>
+        </div>
+
+        <script>
+            function TestController($scope, $http) {
+                $scope.items = [
+                    {title: 'T-Shirts', quantity:0, price: 10.99},
+                    {title: 'MacBook', quantity:0, price: 1999.99}
+                ];
+                $scope.boughtItems = [];
+                
+                $scope.onBuy = function (){
+                    var totalPrice = 0;
+                    var totalDesc = " ";
+                    
+                    $scope.items.forEach(function (item) {
+                                         var thisPrice = (parseFloat(item.quantity) * parseFloat(item.price));
+                                         totalPrice = totalPrice + thisPrice;
+                                         if (item.quantity > 0) {
+                                            totalDesc = totalDesc + item.quantity + " " + item.title + " for " + thisPrice + "$ , ";
+                                         }
+                                         item.quantity = 0;
+                    });
+                    
+                    if (totalPrice > 0){
+                        $scope.boughtItems.push({
+                                                desc: totalDesc,
+                                                price: totalPrice
+                                                })
+                    }
+                    
+                    //$http.post("/api". {data: "hello world!"});
+                };
+            }
+        </script>
+    </body>
+</html>
+
