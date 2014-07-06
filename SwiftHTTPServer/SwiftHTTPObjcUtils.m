@@ -65,12 +65,53 @@
     NSData *bodyData = (__bridge NSData *)CFHTTPMessageCopyBody(message);
     NSString *body = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     NSString *path = [url path];
+    //NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSDictionary *params = [[self class] getDataOfQueryString:[url query]];
+    if (params) {
+        [dataDictionary setObject:params forKey:@"params"];
+    }
+    
+    NSDictionary* json = nil;
+    if (data != nil) {
+        json = [NSJSONSerialization JSONObjectWithData:bodyData options:0 error:nil];
+    }
+    
     [dataDictionary setObject:method forKey:@"method"];
     [dataDictionary setObject:path forKey:@"path"];
     [dataDictionary setObject:body forKey:@"body"];
+    if (json) {
+            [dataDictionary setObject:json forKey:@"json"];
+    } else {
+        NSDictionary *post = [[self class] getDataOfQueryString:body];
+        if (post) {
+            [dataDictionary setObject:post forKey:@"post"];
+        }
+    }
     return [dataDictionary copy];
 }
 
++(NSDictionary *)getDataOfQueryString:(NSString *)url{
+    
+    NSArray *strURLParse = [url componentsSeparatedByString:@"?"];
+    NSArray *arrQueryString = nil;
+    if ([strURLParse count] == 2) {
+        arrQueryString = [[strURLParse objectAtIndex:1] componentsSeparatedByString:@"&"];
+    } else if([strURLParse count] == 1){
+           arrQueryString = [[strURLParse objectAtIndex:0] componentsSeparatedByString:@"&"];
+    } else {
+        return nil;
+    }
+    NSMutableDictionary *queryData = [[NSMutableDictionary alloc] init];
+    for (int i=0; i < [arrQueryString count]; i++) {
+        //NSMutableDictionary *dicQueryStringElement = [[NSMutableDictionary alloc]init];
+        NSArray *arrElement = [[arrQueryString objectAtIndex:i] componentsSeparatedByString:@"="];
+       if ([arrElement count] == 2) {
+           [queryData setObject:[arrElement objectAtIndex:1] forKey:[arrElement objectAtIndex:0]];
+       }
+    }
+    return [queryData copy];
+}
 
 + (NSString*) mimeTypeForFileAtPath: (NSString *) path {
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {

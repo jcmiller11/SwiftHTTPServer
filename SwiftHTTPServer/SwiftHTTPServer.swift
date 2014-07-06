@@ -16,7 +16,9 @@ class SwiftHTTPReq
     var path : String
     let method : String
     let body : String?
-    
+    let json :NSDictionary?
+    let params: NSDictionary?
+    let post: NSDictionary?
     init(path: String)
     {
         self.path = path
@@ -42,6 +44,15 @@ class SwiftHTTPReq
         }
         if let body = data["body"] as? String {
             self.body = body
+        }
+        if let json = data["json"] as? NSDictionary{
+            self.json = json
+        }
+        if let params = data["params"] as? NSDictionary{
+            self.params = params
+        }
+        if let post = data["post"] as? NSDictionary{
+            self.post = post
         }
     }
     
@@ -198,7 +209,6 @@ class SwiftHTTPServer{
     
     func handleRequest(request: SwiftHTTPReq) -> SwiftHTTPRes
     {
-
         let (staticRes, isLoaded) = hadleStaticFile(request)
         if !isLoaded{
         let callbackArray : Array<(SwiftHTTPReq, SwiftHTTPRes)->Bool>? = routes[request.route()]
@@ -219,11 +229,9 @@ class SwiftHTTPServer{
                     break
                 }
             }
-            
         } else {
             notFound(request, res: res)
         }
-        //flush(res)
         return res
         } else {
             return staticRes
@@ -278,11 +286,8 @@ class SwiftHTTPServer{
             }
             var headerData = CFHTTPMessageCopySerializedMessage(responseMessage).takeRetainedValue() as CFData
             incomingFileHandle.writeData(headerData)
-
-            // close
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NSFileHandleDataAvailableNotification, object: incomingFileHandle)
             incomingFileHandle.closeFile()
-            
         } else {
             incomingFileHandle.waitForDataInBackgroundAndNotify()
         }
