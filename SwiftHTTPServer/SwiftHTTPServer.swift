@@ -53,13 +53,24 @@ class SwiftHTTPReq
 
 class SwiftHTTPRes
 {
-    var body = ""
+    var body:NSMutableData?
     var code = 200
     var redirectPath = ""
     var shouldRedirect = false
-    func send(body: String)
+    var contentType:NSString = "text/html"
+    
+    func send(string: String)
     {
-        self.body += body
+        var data = string.dataUsingEncoding(NSUTF8StringEncoding)
+        send(data)
+    }
+    
+    func send(data: NSData){
+        if var body = body {
+            body.appendData(data)
+        } else {
+            body = NSMutableData(data: data)
+        }
     }
     
     func redirect(path: String)
@@ -68,18 +79,13 @@ class SwiftHTTPRes
         redirectPath = path
     }
     
-    func flush()
-    {
-        NSLog(body)
-    }
+
 }
 
 class SwiftHTTPServer{
     var routes = Dictionary<String, Array<(SwiftHTTPReq, SwiftHTTPRes)-> Bool >>()
     var socket = SwiftHTTPObjcUtils.CFSocketCreate().takeRetainedValue()
     var listeningHandle:NSFileHandle?
-    var flush = {(res: SwiftHTTPRes)in NSLog(res.body) }
-    
     init () {
     }
     
@@ -176,9 +182,11 @@ class SwiftHTTPServer{
                 for obj: AnyObject in directory{
                     let file = obj as String
                     if file == fileName {
-                        var body = NSString.stringWithContentsOfFile(resourcePath + "/" + file, encoding: NSUTF8StringEncoding, error: nil)
+                        var filePath = resourcePath + "/" + file
+                        var data = NSData(contentsOfFile: filePath)
                         var res = SwiftHTTPRes()
-                        res.send(body)
+                        res.contentType = SwiftHTTPObjcUtils.mimeTypeForFileAtPath(filePath)
+                        res.send(data)
                         return (res, true)
                     }
                 }
@@ -261,11 +269,13 @@ class SwiftHTTPServer{
             let requestData = SwiftHTTPObjcUtils.dateForHttpRequest(messageData)
             var request = SwiftHTTPReq(data: requestData)
             var response = handleRequest(request)
-            NSLog(response.body)
+            
             var responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, response.code, nil, kCFHTTPVersion1_0).takeRetainedValue()
-            CFHTTPMessageSetHeaderFieldValue(responseMessage, "Content-Type" as CFString, "text/html" as CFString)
+            CFHTTPMessageSetHeaderFieldValue(responseMessage, "Content-Type" as CFString, response.contentType as CFString)
             CFHTTPMessageSetHeaderFieldValue(responseMessage, "Connection" as CFString, "close" as CFString);
-            CFHTTPMessageSetBody( responseMessage, (response.body as NSString).dataUsingEncoding(NSUTF8StringEncoding));
+            if var body = response.body {
+                CFHTTPMessageSetBody( responseMessage, body );
+            }
             var headerData = CFHTTPMessageCopySerializedMessage(responseMessage).takeRetainedValue() as CFData
             incomingFileHandle.writeData(headerData)
 

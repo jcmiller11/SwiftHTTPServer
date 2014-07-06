@@ -18,6 +18,8 @@
 		93FB22BD19680C8700A59CDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93FB22BC19680C8700A59CDB /* Images.xcassets */; };
 		93FB22C019680C8700A59CDB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FB22BE19680C8700A59CDB /* MainMenu.xib */; };
 		93FB22CC19680C8800A59CDB /* SwiftHTTPServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB22CB19680C8800A59CDB /* SwiftHTTPServerTests.swift */; };
+		D9B92AD919688D79000DE563 /* Swift-Cheat-Sheet.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D9B92AD819688D79000DE563 /* Swift-Cheat-Sheet.pdf */; };
+		D9B92ADB19688D86000DE563 /* Mila-Kunis-19.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D9B92ADA19688D86000DE563 /* Mila-Kunis-19.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		93FB22C519680C8800A59CDB /* SwiftHTTPServerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftHTTPServerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FB22CA19680C8800A59CDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93FB22CB19680C8800A59CDB /* SwiftHTTPServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftHTTPServerTests.swift; sourceTree = "<group>"; };
+		D9B92AD819688D79000DE563 /* Swift-Cheat-Sheet.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Swift-Cheat-Sheet.pdf"; sourceTree = "<group>"; };
+		D9B92ADA19688D86000DE563 /* Mila-Kunis-19.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Mila-Kunis-19.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				93910E2A19694A3B00B11B44 /* ang.html */,
+				D9B92AD819688D79000DE563 /* Swift-Cheat-Sheet.pdf */,
+				D9B92ADA19688D86000DE563 /* Mila-Kunis-19.jpg */,
 				930795B419686FAB00B28994 /* index.html */,
 			);
 			path = Public;
@@ -220,9 +226,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				930795B519686FAB00B28994 /* index.html in Resources */,
+				D9B92ADB19688D86000DE563 /* Mila-Kunis-19.jpg in Resources */,
 				930795B81968721000B28994 /* test.json in Resources */,
 				93910E2B19694A3B00B11B44 /* ang.html in Resources */,
 				93FB22BD19680C8700A59CDB /* Images.xcassets in Resources */,
+				D9B92AD919688D79000DE563 /* Swift-Cheat-Sheet.pdf in Resources */,
 				93FB22C019680C8700A59CDB /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
