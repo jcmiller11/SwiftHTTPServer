@@ -21,6 +21,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         server.get("/world", callback: [routes.authenticate(), routes.world()])
         server.get("/api/boughtItems", callback: routes.boughtItems())
         server.post("/api/buy", callback: routes.buy())
+        server.get("/api/posts", callback: routes.boughtItems())
+        server.post("/api/add_post", callback: routes.buy())
         
 
         server.get("/inline", callback: {req, res in

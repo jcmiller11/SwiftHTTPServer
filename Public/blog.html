@@ -1,0 +1,37 @@
+<html ng-app>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"></link>
+    </head>
+    <body ng-controller = 'BlogController'>
+        <div class="col-md-4">
+            <legend><h1>Blog</h1></legend>
+            <div class="list-group">
+                <a class="list-group-item" ng-repeat="post in posts">
+                    {{post.blogpost}}
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <legend><h1>Add blog post!</h1></legend>
+            <textarea class="form-control" rows="3" ng-model="blogpost"></textarea>
+            <button type="sumbit" class="btn btn-success pull-right" ng-click="send()">ADD</button>
+        </div>
+
+        <script>
+            function BlogController($scope, $http) {
+                
+                $http.get('/api/posts').success( function (posts) {
+                                                $scope.posts = posts;
+                                                });
+                
+                $scope.send = function () {
+                    $scope.posts.push({blogpost: $scope.blogpost});
+                          $http.post('/api/add_post', {blogpost: $scope.blogpost});
+                          $scope.blogpost = "";
+                };
+            }
+        </script>
+    </body>
+</html>
+

@@ -10,7 +10,8 @@ import Cocoa
 
 class Routes: NSObject {
     var boughtItemsArr:NSMutableArray = NSMutableArray.array()
-
+    var postsArr:NSMutableArray = NSMutableArray.array()
+    
     func authenticate()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
         return {req, res in
             return true
@@ -51,6 +52,24 @@ class Routes: NSObject {
     func boughtItems()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
         return {req, res in
             var responseString = SwiftHTTPObjcUtils.JSONFromArray(self.boughtItemsArr)
+            res.send(responseString)
+            return true
+        }
+    }
+    
+    func addPost()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
+        return {req, res in
+            if let json = req.post {
+                self.postsArr.addObject(json)
+            }
+            res.send("")
+            return true
+        }
+    }
+    
+    func posts()->((SwiftHTTPReq, SwiftHTTPRes) -> Bool){
+        return {req, res in
+            var responseString = SwiftHTTPObjcUtils.JSONFromArray(self.postsArr)
             res.send(responseString)
             return true
         }
