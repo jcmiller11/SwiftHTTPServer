@@ -79,7 +79,7 @@ class SwiftHTTPRes
     func send(string: String)
     {
         var data = string.dataUsingEncoding(NSUTF8StringEncoding)
-        send(data)
+        send(data!)
     }
     
     func send(data: NSData){
@@ -193,7 +193,7 @@ class SwiftHTTPServer{
             resourcePath += request.path
             resourcePath = resourcePath.stringByDeletingLastPathComponent
             NSLog(resourcePath);
-            let directory = NSFileManager.defaultManager().directoryContentsAtPath(resourcePath);
+            let directory = NSFileManager.defaultManager().contentsOfDirectoryAtPath(resourcePath,error:nil);//FIXME: handle this error properly
             if let directory = directory {
                 let fileName = request.path.lastPathComponent
                 for obj: AnyObject in directory{
